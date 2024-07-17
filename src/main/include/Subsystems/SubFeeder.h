@@ -11,6 +11,8 @@
 
 class SubFeeder : public frc2::SubsystemBase {
  public:
+ frc2::CommandPtr Feed();
+ 
   SubFeeder();
   static SubFeeder& GetInstance() {static SubFeeder inst; return inst;} 
 

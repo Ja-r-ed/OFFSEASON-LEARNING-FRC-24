@@ -34,6 +34,6 @@ class SubShooter : public frc2::SubsystemBase {
   // Simulation
   static constexpr double Gearing = 1.0;
   static constexpr units::kilogram_square_meter_t FLYWHEEL_MASS = 0.05_kg_sq_m;
-  frc::sim::FlywheelSim _flywheelSim{frc::DCMotor::NEO(), GEARING, FLYWHEEL_MASS}
+  frc::sim::FlywheelSim _flywheelSim{frc::DCMotor::NEO(), Gearing, FLYWHEEL_MASS};
 };
 

@@ -22,5 +22,5 @@ class SubFeeder : public frc2::SubsystemBase {
  private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
-  rev::CANSparkMax _feedermotor{canid::feedermotor, rev::CANSparkmaxLowLevel::MotorType::kBrushless};
+  rev::CANSparkMax _feedermotor{canid::feedermotor, rev::CANSparkMax::MotorType::kBrushless};
 };

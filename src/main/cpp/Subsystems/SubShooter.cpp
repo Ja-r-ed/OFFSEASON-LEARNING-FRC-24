@@ -7,7 +7,7 @@
 
 
 SubShooter::SubShooter() {
-    frc::smartdashboard::PutData{"Shooter Motor", (wpi::Sendable*)&_shootermotor};
+    frc::SmartDashboard::PutData{"Shooter Motor", (wpi::Sendable*)&_shootermotor};
 };
 
 // This method will be called once per scheduler run
@@ -27,7 +27,7 @@ frc2::CommandPtr SubShooter::SpinFlyWheel(){
         });
 }
 
-void SUbShooter::SimulationPeriodic() {
+void SubShooter::SimulationPeriodic() {
     auto volts = _shootermotor.GetSimVoltage();
 
     _flywheelSim.SetInputVoltage(volts);

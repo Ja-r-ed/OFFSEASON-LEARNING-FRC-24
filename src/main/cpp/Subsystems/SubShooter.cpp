@@ -6,7 +6,9 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 
 
-SubShooter::SubShooter() = default;
+SubShooter::SubShooter() {
+    frc::smartdashboard::PutData{"Shooter Motor", (wpi::Sendable*)&_shootermotor};
+};
 
 // This method will be called once per scheduler run
 void SubShooter::Periodic() {
@@ -17,10 +19,21 @@ frc2::CommandPtr SubShooter::SpinFlyWheel(){
     return StartEnd(
         [this]
         {
-            _shootermotor.Set(0.8);
+            _shootermotor.SetVelocityTarget(1000_rpm);
         },
         [this]
         {
             _shootermotor.Set(0);
         });
+}
+
+void SUbShooter::SimulationPeriodic() {
+    auto volts = _shootermotor.GetSimVoltage();
+
+    _flywheelSim.SetInputVoltage(volts);
+    _flywheelSim.Update(20_ms);
+
+    auto velocity = _flywheelSim.GetAngularVelocity();
+
+    _shootermotor.UpdateSimEncoder(0_deg, velocity);
 }

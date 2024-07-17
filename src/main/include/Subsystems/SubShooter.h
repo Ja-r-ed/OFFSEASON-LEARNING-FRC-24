@@ -5,9 +5,13 @@
 #pragma once
 
 #include <frc2/command/SubsystemBase.h>
-#include <rev/CANSparkMax.h>
+#include "utilities/ICSparkMax.h"
 #include <frc2/command/Commands.h>
 #include "Subsystems/Constants.h"
+
+#include <frc/simulation/FlywheelSim.h>
+#include <frc/system/plant/DCMotor.h>
+#include <units/mass.h>
 
 class SubShooter : public frc2::SubsystemBase {
  public:
@@ -18,10 +22,18 @@ class SubShooter : public frc2::SubsystemBase {
    * Will be called periodically whenever the CommandScheduler runs.
    */
   void Periodic() override;
+  void SimulationPeriodic() override; 
+
   frc2::CommandPtr SpinFlyWheel();
 
  private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
-  rev::CANSparkMax _shootermotor{canid::shootermotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless};
+  ICSparkMax _shootermotor{canid::shootermotor};
+
+  // Simulation
+  static constexpr double Gearing = 1.0;
+  static constexpr units::kilogram_square_meter_t FLYWHEEL_MASS = 0.05_kg_sq_m;
+  frc::sim::FlywheelSim _flywheelSim{frc::DCMotor::NEO(), GEARING, FLYWHEEL_MASS}
 };
+

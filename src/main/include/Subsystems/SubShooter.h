@@ -10,6 +10,7 @@
 
 class SubShooter : public frc2::SubsystemBase {
  public:
+ static SubShooter& GetInstance() {static SubShooter inst; return inst;}
   SubShooter();
 
   /**

@@ -5,12 +5,15 @@
 #include "RobotContainer.h"
 
 #include <frc2/command/Commands.h>
+#include "Subsystems/SubShooter.h"
 
 RobotContainer::RobotContainer() {
   ConfigureBindings();
 }
 
-void RobotContainer::ConfigureBindings() {}
+void RobotContainer::ConfigureBindings() {
+  _controller.A().WhileTrue(SubShooter::GetInstance().SpinFlyWheel());
+}
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
   return frc2::cmd::Print("No autonomous command configured");

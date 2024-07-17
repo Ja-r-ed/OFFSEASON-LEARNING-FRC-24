@@ -7,7 +7,7 @@
 #include <frc2/command/SubsystemBase.h>
 #include "utilities/ICSparkMax.h"
 #include <frc2/command/Commands.h>
-#include "Subsystems/Constants.h"
+#include "Constants.h"
 
 #include <frc/simulation/FlywheelSim.h>
 #include <frc/system/plant/DCMotor.h>

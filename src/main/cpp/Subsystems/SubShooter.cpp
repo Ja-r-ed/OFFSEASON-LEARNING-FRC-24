@@ -7,7 +7,7 @@
 
 
 SubShooter::SubShooter() {
-    frc::SmartDashboard::PutData{"Shooter Motor", (wpi::Sendable*)&_shootermotor};
+    frc::SmartDashboard::PutData("Shooter Motor", (wpi::Sendable*)&_shootermotor);
 };
 
 // This method will be called once per scheduler run

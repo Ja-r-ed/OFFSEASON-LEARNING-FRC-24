@@ -5,10 +5,14 @@
 #pragma once
 
 #include <frc2/command/SubsystemBase.h>
+#include <rev/CANSparkMax.h>
+#include <frc2/command/Commands.h>
+#include "Subsystems/Constants.h"
 
 class SubFeeder : public frc2::SubsystemBase {
  public:
   SubFeeder();
+  static SubFeeder& GetInstance() {static SubFeeder inst; return inst;} 
 
   /**
    * Will be called periodically whenever the CommandScheduler runs.
@@ -18,4 +22,5 @@ class SubFeeder : public frc2::SubsystemBase {
  private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
+  rev::CANSparkMax _feedermotor{canid::feedermotor, rev::CANSparkMaxLowLevel::MotorType::kBrushless};
 };

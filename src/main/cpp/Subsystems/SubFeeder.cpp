@@ -4,7 +4,23 @@
 
 #include "Subsystems/SubFeeder.h"
 
+#include <frc/smartdashboard/SmartDashboard.h>
+
 SubFeeder::SubFeeder() = default;
 
 // This method will be called once per scheduler run
-void SubFeeder::Periodic() {}
+void SubFeeder::Periodic() {
+    frc::SmartDashboard::PutNumber("Feeder Power", _feedermotor.Get());
+}
+
+frc2::CommandPtr SubFeeder::Feed(){
+    return StartEnd(
+        [this]
+        {
+            _feedermotor.Set(1);
+        },
+        [this]
+        {
+            _feedermotor.Set(0);
+        });
+}

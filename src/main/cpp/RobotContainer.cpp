@@ -12,7 +12,11 @@ RobotContainer::RobotContainer() {
 }
 
 void RobotContainer::ConfigureBindings() {
-  _controller.A().WhileTrue(SubShooter::GetInstance().SpinFlyWheel());
+  _controller.A().WhileTrue(
+    SubShooter::GetInstance().SpinFlyWheel()
+    .AlongWith(frc2::cmd::Wait(1_s))
+    .AndThen(SubFeeder::GetInstance().Feed())
+    );
 }
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {

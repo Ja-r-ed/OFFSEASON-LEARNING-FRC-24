@@ -4,6 +4,11 @@
 
 #pragma once
 
+#include <frc/simulation/DCMotorSim.h>
+#include <frc/system/plant/DCMotor.h>
+#include <units/angle.h>
+#include <units/moment_of_inertia.h>
+
 #include <frc2/command/SubsystemBase.h>
 #include <frc2/command/Commands.h>
 #include "utilities/ICSparkMax.h"
@@ -21,6 +26,7 @@ class SubTurret : public frc2::SubsystemBase {
    * Will be called periodically whenever the CommandScheduler runs.
    */
   void Periodic() override;
+  void SimulationPeriodic() override;
 
   frc2::CommandPtr TurnTo{units::degree_t angle};
 
@@ -30,4 +36,5 @@ class SubTurret : public frc2::SubsystemBase {
   ICSparkMax _turretmotor{canid::turretmotor};
 
   static constexpr double Gearing = 20;
+  static constexpr inline auto MOI = 0.005_kg_sq_m;
 };

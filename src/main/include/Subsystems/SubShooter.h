@@ -23,6 +23,7 @@ class SubShooter : public frc2::SubsystemBase {
    */
   void Periodic() override;
   void SimulationPeriodic() override; 
+  bool AtTarget();
 
   frc2::CommandPtr SpinFlyWheel();
 

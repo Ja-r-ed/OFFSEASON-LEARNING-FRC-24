@@ -12,7 +12,9 @@ SubTurret::SubTurret() {
 }
 
 // This method will be called once per scheduler run
-void SubTurret::Periodic() {}
+void SubTurret::Periodic() {
+    frc::SmartDashboard::PutBoolean("Turret on target", AtTarget());
+}
 
 frc2::CommandPtr SubTurret::TurnTo(units:degree_t angle) {
     return RunOnce(
@@ -20,6 +22,10 @@ frc2::CommandPtr SubTurret::TurnTo(units:degree_t angle) {
             _turretmotor.SetPositionTarget(angle);
         }
     );
+}
+
+bool SubTurret::AtTarget() {
+    return units::math::abs(_turretmotor.GetPosError()) < 1_deg;
 }
 
 void SimulationPeriodic () {

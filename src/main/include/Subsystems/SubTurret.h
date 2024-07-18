@@ -27,8 +27,9 @@ class SubTurret : public frc2::SubsystemBase {
    */
   void Periodic() override;
   void SimulationPeriodic() override;
+  void AtTarget();
 
-  frc2::CommandPtr TurnTo{units::degree_t angle};
+  frc2::CommandPtr TurnTo{units::degree_t, angle};
 
  private:
   // Components (e.g. motor controllers and sensors) should generally be

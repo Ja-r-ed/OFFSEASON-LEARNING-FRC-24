@@ -7,14 +7,14 @@
 namespace cmd {
 
     using namespace frc2::cmd;
-    
+
     frc2::CommandPtr ShootSequence() {
         return frc2::cmd::Parallel(
             SubShooter::GetInstance().SpinFlyWheel(),
             SubTurret::GetInstance().TurnTo(30_deg),
             frc2::cmd::Sequence(
-                frc2::cmd::WaitUntill([] {return SubShooter::GetInstance().AtTarget();}),
-                frc2::cmd::WaitUntill([] {return SubTurret::GetInstance().AtTarget();}),
+                frc2::cmd::WaitUntil([] {return SubShooter::GetInstance().AtTarget();}),
+                frc2::cmd::WaitUntil([] {return SubTurret::GetInstance().AtTarget();}),
                 SubFeeder::GetInstance().Feed()
             )
         );

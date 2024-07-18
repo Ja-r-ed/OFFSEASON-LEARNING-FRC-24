@@ -12,7 +12,7 @@ SubShooter::SubShooter() {
 
 // This method will be called once per scheduler run
 void SubShooter::Periodic() {
-    frc::SmartDashboard::PutBoolean("Shooter on target", AtTarget());
+    frc::SmartDashboard::PutBoolean("Turret on target", AtTarget());
     frc::SmartDashboard::PutNumber("Shooter Speed", _shootermotor.Get());
 }
 
@@ -27,8 +27,9 @@ frc2::CommandPtr SubShooter::SpinFlyWheel(){
             _shootermotor.Set(0);
         });
 }
-bool SubShooter:AtTarget() {
-    if units::math:abs(_shootermotor.GetVelError()) < 20_rpm;
+bool SubShooter::AtTarget() {
+    return units::math:abs(_shootermotor.GetVelError()) < 20_rpm;
+
 }
 
 void SubShooter::SimulationPeriodic() {

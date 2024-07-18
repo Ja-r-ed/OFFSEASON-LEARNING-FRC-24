@@ -5,6 +5,9 @@
 #include "Subsystems/SubTurret.h"
 
 namespace cmd {
+
+    using namespace frc2::cmd;
+    
     frc2::CommandPtr ShootSequence() {
         return frc2::cmd::Parallel(
             SubShooter::GetInstance().SpinFlyWheel(),

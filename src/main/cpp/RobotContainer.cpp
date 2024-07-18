@@ -7,17 +7,14 @@
 #include <frc2/command/Commands.h>
 #include "Subsystems/SubShooter.h"
 #include "Subsystems/SubTurret.h"
+#include "Commands/ShootingCommands.h"
 
 RobotContainer::RobotContainer() {
   ConfigureBindings();
 }
 
 void RobotContainer::ConfigureBindings() {
-  _controller.A().WhileTrue(
-    SubShooter::GetInstance().SpinFlyWheel()
-    .AlongWith(frc2::cmd::Wait(1_s))
-    .AndThen(SubFeeder::GetInstance().Feed())
-    );
+  _controller.A().WhileTrue(cmd::ShootSequence());
 
   _controller.X().OnTrue(SubTurret::GetInstance().TurnTo(30_deg));
   _controller.Y().OnTrue(SubTurret::GetInstance().TurnTo(0_deg));

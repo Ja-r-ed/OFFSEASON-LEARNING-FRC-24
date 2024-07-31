@@ -150,7 +150,7 @@ void RobotContainer::ConfigureBindings() {
 
   // _driverController.RightBumper().WhileTrue(/*Align2Amp*/);
 
-  _operatorController.Start().WhileTrue(cmd::OuttakeNote());
+  // _operatorController.Start().WhileTrue(cmd::OuttakeNote());
 
   _operatorController.LeftTrigger().WhileTrue(cmd::PassNote());
   _operatorController.LeftBumper().OnTrue(SubShooter::GetInstance().ShooterChangePosClose());

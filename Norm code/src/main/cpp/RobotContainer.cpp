@@ -101,6 +101,19 @@ RobotContainer::RobotContainer() {
 }
 
 void RobotContainer::ConfigureBindings() {
+  // Single controller controls
+
+  _driverController.LeftTrigger().WhileTrue(cmd::IntakefullSequence());
+  _driverController.X().OnTrue(SubClimber::GetInstance().ClimberManualDrive(0.5));
+  _driverController.X().OnFalse(SubClimber::GetInstance().ClimberManualDrive(0));
+  _driverController.LeftBumper().WhileTrue(cmd::VisionAlignToSpeaker(_driverController));
+  _driverController.RightBumper().WhileTrue(/*Align2Amp*/);
+  _driverController.B().WhileTrue(cmd::PassNote());
+  _driverController.RightTrigger().WhileTrue(cmd::ShootSpeakerOrArm());
+  _driverController.Y().OnTrue(cmd::ArmToAmpPos());
+  _driverController.Y().OnFalse(cmd::ArmToStow());
+  _driverController.A().OnTrue(cmd::PrepareToShoot());
+
   // SOFTWARE CONTROLS
 
   //   _driverController.Start().OnTrue(SubDrivebase::GetInstance().ResetGyroCmd()); //working
@@ -123,7 +136,7 @@ void RobotContainer::ConfigureBindings() {
   //   _operatorController.RightBumper().OnFalse(SubShooter::GetInstance().ShooterChangePosFar());
 
   //   _operatorController.LeftBumper().OnFalse(SubShooter::GetInstance().ShooterChangePosClose());
-  //   _operatorController.LeftTrigger().WhileTrue(cmd::IntakefullSequence());
+  // _driverController.LeftTrigger().WhileTrue(cmd::IntakefullSequence());
 
   //   _operatorController.X().OnTrue(SubClimber::GetInstance().ClimberPosition(0.625_m));
   //   _operatorController.Y().OnTrue(SubClimber::GetInstance().ClimberPosition(0.02_m));
@@ -133,40 +146,45 @@ void RobotContainer::ConfigureBindings() {
 
   //   POVHelper::Up(&_operatorController).OnTrue(SubClimber::GetInstance().ClimberManualDrive(0.5));
   //   POVHelper::Up(&_operatorController).OnFalse(SubClimber::GetInstance().ClimberManualDrive(0));
-  //   POVHelper::Down(&_operatorController).OnTrue(SubClimber::GetInstance().ClimberManualDrive(0.5));
-  //   POVHelper::Down(&_operatorController).OnFalse(SubClimber::GetInstance().ClimberManualDrive(0));
+  // _driverController.X.OnTrue(SubClimber::GetInstance().ClimberManualDrive(0.5));
+  // _driverController.X.OnFalse(SubClimber::GetInstance().ClimberManualDrive(0));
 
   // DRIVER CONTROLS
 
-  _driverController.Y().OnTrue(SubDrivebase::GetInstance().ResetGyroCmd());
-  // _driverController.LeftTrigger().WhileTrue(/*Align2Stage*/);
-  // _driverController.LeftBumper().WhileTrue(/*IntakeFromSource*/);
+  // _driverController.Y().OnTrue(SubDrivebase::GetInstance().ResetGyroCmd());
+  // // _driverController.LeftTrigger().WhileTrue(/*Align2Stage*/);
+  // // _driverController.LeftBumper().WhileTrue(/*IntakeFromSource*/);
   
-  _driverController.RightTrigger().WhileTrue(cmd::VisionAlignToSpeaker(_driverController));
-  _driverController.LeftBumper().WhileTrue(cmd::IntakefullSequence().AndThen(Rumble(1, 0.3_s)));
-  _driverController.LeftTrigger().WhileTrue(cmd::IntakefullSequence().AndThen(Rumble(1, 0.3_s)));
-  _driverController.X().WhileTrue(SubArm::GetInstance().Outtake());
-  _driverController.A().WhileTrue(cmd::ShootSpeakerOrArm());
+  // _driverController.LeftBumper().WhileTrue(cmd::VisionAlignToSpeaker(_driverController));
+  // _driverController.LeftBumper().WhileTrue(cmd::IntakefullSequence().AndThen(Rumble(1, 0.3_s)));
+  // _driverController.LeftTrigger().WhileTrue(cmd::IntakefullSequence().AndThen(Rumble(1, 0.3_s)));
+  // _driverController.X().WhileTrue(SubArm::GetInstance().Outtake());
+  // _driverController.A().WhileTrue(cmd::ShootSpeakerOrArm());
 
   // _driverController.RightBumper().WhileTrue(/*Align2Amp*/);
 
-  // _operatorController.Start().WhileTrue(cmd::OuttakeNote());
+  // // _operatorController.Start().WhileTrue(cmd::OuttakeNote());
 
-  _operatorController.LeftTrigger().WhileTrue(cmd::PassNote());
-  _operatorController.LeftBumper().OnTrue(SubShooter::GetInstance().ShooterChangePosClose());
-  _operatorController.RightBumper().OnTrue(SubShooter::GetInstance().ShooterChangePosFar());
-  _operatorController.RightTrigger().WhileTrue(cmd::ShootSpeakerOrArm());
+  // POVHelper::Up(&_driverController).WhileTrue(cmd::PassNote());
+  // _operatorController.LeftBumper().OnTrue(SubShooter::GetInstance().ShooterChangePosClose());
+  // _operatorController.RightBumper().OnTrue(SubShooter::GetInstance().ShooterChangePosFar());
+  // _driverController.RightTrigger().WhileTrue(cmd::ShootSpeakerOrArm());
 
-  _operatorController.X().WhileTrue(cmd::ShootIntoAmp());
-  _operatorController.Back().WhileTrue(SubClimber::GetInstance().ClimberAutoReset());
-  // amp
-  _operatorController.B().OnTrue(cmd::ArmToAmpPos());
-  _operatorController.B().OnFalse(cmd::ArmToStow());
-  // amp
-  _operatorController.Y().OnTrue(cmd::ArmToAmpPos());
-  _operatorController.Y().OnFalse(cmd::ArmToStow());
+  // _operatorController.X().WhileTrue(cmd::ShootIntoAmp());
+  // _operatorController.Back().WhileTrue(SubClimber::GetInstance().ClimberAutoReset());
+  // // amp
+  // _driverController.B().OnTrue(cmd::ArmToAmpPos());
+  // _driverController.B().OnFalse(cmd::ArmToStow());
+  // // amp
+  // _driverController.Y().OnTrue(cmd::ArmToAmpPos());
+  // _driverController.Y().OnFalse(cmd::ArmToStow());
 
-  _operatorController.A().OnTrue(cmd::PrepareToShoot());
+  // _driverController.A().OnTrue(cmd::PrepareToShoot());
+
+
+
+
+
 
   POVHelper::Up(&_operatorController).OnTrue(SubClimber::GetInstance().ClimberPosition(0.467_m));
   POVHelper::Down(&_operatorController).OnTrue(SubClimber::GetInstance().ClimberPosition(0.001_m));

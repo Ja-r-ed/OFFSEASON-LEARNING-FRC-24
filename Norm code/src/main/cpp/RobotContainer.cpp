@@ -113,6 +113,7 @@ void RobotContainer::ConfigureBindings() {
   _driverController.Y().OnTrue(cmd::ArmToAmpPos());
   _driverController.Y().OnFalse(cmd::ArmToStow());
   _driverController.A().OnTrue(cmd::PrepareToShoot());
+  POVHelper::Up(&_driverController).OnTrue(SubDrivebase::GetInstance().ResetGyroCmd());
 
   // SOFTWARE CONTROLS
 

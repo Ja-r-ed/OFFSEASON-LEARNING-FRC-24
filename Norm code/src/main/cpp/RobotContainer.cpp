@@ -103,17 +103,50 @@ RobotContainer::RobotContainer() {
 void RobotContainer::ConfigureBindings() {
   // Single controller controls
 
-  _driverController.LeftTrigger().WhileTrue(cmd::IntakefullSequence());
-  _driverController.X().OnTrue(SubClimber::GetInstance().ClimberManualDrive(0.5));
-  _driverController.X().OnFalse(SubClimber::GetInstance().ClimberManualDrive(0));
-  _driverController.LeftBumper().WhileTrue(cmd::VisionAlignToSpeaker(_driverController));
-  _driverController.RightBumper().WhileTrue(/*Align2Amp*/);
-  _driverController.B().WhileTrue(cmd::PassNote());
-  _driverController.RightTrigger().WhileTrue(cmd::ShootSpeakerOrArm());
-  _driverController.Y().OnTrue(cmd::ArmToAmpPos());
-  _driverController.Y().OnFalse(cmd::ArmToStow());
-  _driverController.A().OnTrue(cmd::PrepareToShoot());
-  POVHelper::Up(&_driverController).OnTrue(SubDrivebase::GetInstance().ResetGyroCmd());
+
+// not both bumper combination
+
+  !_driverController.LeftBumper() && !_driverController.RightBumper() && _driverController.LeftTrigger().WhileTrue(cmd::IntakefullSequence());
+  !_driverController.LeftBumper() && !_driverController.RightBumper() && _driverController.X().OnTrue(SubClimber::GetInstance().ClimberManualDrive(0.5));
+  !_driverController.LeftBumper() && !_driverController.RightBumper() && _driverController.X().OnFalse(SubClimber::GetInstance().ClimberManualDrive(0));
+  !_driverController.RightBumper() && _driverController.LeftBumper().WhileTrue(cmd::VisionAlignToSpeaker(_driverController));
+  !_driverController.LeftBumper() && !_driverController.RightBumper() && _driverController.B().WhileTrue(cmd::PassNote());
+  !_driverController.LeftBumper() && !_driverController.RightBumper() && _driverController.RightTrigger().WhileTrue(cmd::ShootSpeakerOrArm());
+  !_driverController.LeftBumper() && !_driverController.RightBumper() && _driverController.Y().OnTrue(cmd::ArmToAmpPos());
+  !_driverController.LeftBumper() && !_driverController.RightBumper() && _driverController.Y().OnFalse(cmd::ArmToStow());
+  !_driverController.LeftBumper() && !_driverController.RightBumper() && _driverController.A().OnTrue(cmd::PrepareToShoot());
+  !_driverController.LeftBumper() && !_driverController.RightBumper() && _driverController.Start().WhileTrue(cmd::OuttakeNote());
+  
+  !_driverController.LeftBumper() && !_driverController.RightBumper() && POVHelper::Left(&_driverController) && (POVHelper::Right(&_driverController)).OnTrue(SubDrivebase::GetInstance().ResetGyroCmd());
+  !_driverController.LeftBumper() && !_driverController.RightBumper() && POVHelper::Up(&_driverController).OnTrue(SubClimber::GetInstance().ClimberPosition(0.467_m));
+  !_driverController.LeftBumper() && !_driverController.RightBumper() && POVHelper::Down(&_driverController).OnTrue(SubClimber::GetInstance().ClimberPosition(0.001_m));
+  !_driverController.LeftBumper() && !_driverController.RightBumper() && POVHelper::Left(&_driverController).ToggleOnTrue(SubIntake::GetInstance().ToggleExtendIntake());
+  !_driverController.LeftBumper() && !_driverController.RightBumper() && POVHelper::Right(&_driverController).OnTrue(SubClimber::GetInstance().ClimberPosition(SubClimber::_ClimberPosStow));
+
+
+// both bumper combination
+
+  _driverController.LeftBumper() && _driverController.RightBumper() && _operatorController.RightTrigger().OnTrue(SubShooter::GetInstance().ShooterChangePosFar());
+  _driverController.LeftBumper() && _driverController.RightBumper() && _operatorController.LeftTrigger().OnTrue(SubShooter::GetInstance().ShooterChangePosClose());
+
+
+
+  //joystick related
+  frc2::Trigger(frc2::CommandScheduler::GetInstance().GetDefaultButtonLoop(), [=, this] {
+    return (_driverController.GetLeftY() < -0.2 || _driverController.GetLeftY() > 0.2) &&
+    !(_driverController.GetRightY() < -0.2 || _driverController.GetRightY() > 0.2);
+  }).WhileTrue(SubClimber::GetInstance().ClimberJoystickDriveLeft(_driverController));
+
+  frc2::Trigger(frc2::CommandScheduler::GetInstance().GetDefaultButtonLoop(), [=, this] {
+    return (_driverController.GetRightY() < -0.2 || _driverController.GetRightY() > 0.2) &&
+    !(_driverController.GetLeftY() < -0.2 || _driverController.GetLeftY() > 0.2);
+  }).WhileTrue(SubClimber::GetInstance().ClimberJoystickDriveRight(_driverController));
+
+  frc2::Trigger(frc2::CommandScheduler::GetInstance().GetDefaultButtonLoop(), [=, this] {
+    return (_driverController.GetRightY() < -0.2 || _driverController.GetRightY() > 0.2) &&
+           (_driverController.GetLeftY() < -0.2 || _driverController.GetLeftY() > 0.2);
+  }).WhileTrue(SubClimber::GetInstance().ClimberJoystickDrive(_driverController));
+
 
   // SOFTWARE CONTROLS
 
@@ -187,25 +220,25 @@ void RobotContainer::ConfigureBindings() {
 
 
 
-  POVHelper::Up(&_operatorController).OnTrue(SubClimber::GetInstance().ClimberPosition(0.467_m));
-  POVHelper::Down(&_operatorController).OnTrue(SubClimber::GetInstance().ClimberPosition(0.001_m));
-  POVHelper::Left(&_operatorController).ToggleOnTrue(SubIntake::GetInstance().ToggleExtendIntake());
-  POVHelper::Right(&_operatorController).OnTrue(SubClimber::GetInstance().ClimberPosition(SubClimber::_ClimberPosStow));
+  // POVHelper::Up(&_operatorController).OnTrue(SubClimber::GetInstance().ClimberPosition(0.467_m));
+  // POVHelper::Down(&_operatorController).OnTrue(SubClimber::GetInstance().ClimberPosition(0.001_m));
+  // POVHelper::Left(&_operatorController).ToggleOnTrue(SubIntake::GetInstance().ToggleExtendIntake());
+  // POVHelper::Right(&_operatorController).OnTrue(SubClimber::GetInstance().ClimberPosition(SubClimber::_ClimberPosStow));
 
-  frc2::Trigger(frc2::CommandScheduler::GetInstance().GetDefaultButtonLoop(), [=, this] {
-    return (_operatorController.GetLeftY() < -0.2 || _operatorController.GetLeftY() > 0.2) &&
-    !(_operatorController.GetRightY() < -0.2 || _operatorController.GetRightY() > 0.2);
-  }).WhileTrue(SubClimber::GetInstance().ClimberJoystickDriveLeft(_operatorController));
+  // frc2::Trigger(frc2::CommandScheduler::GetInstance().GetDefaultButtonLoop(), [=, this] {
+  //   return (_operatorController.GetLeftY() < -0.2 || _operatorController.GetLeftY() > 0.2) &&
+  //   !(_operatorController.GetRightY() < -0.2 || _operatorController.GetRightY() > 0.2);
+  // }).WhileTrue(SubClimber::GetInstance().ClimberJoystickDriveLeft(_operatorController));
 
-  frc2::Trigger(frc2::CommandScheduler::GetInstance().GetDefaultButtonLoop(), [=, this] {
-    return (_operatorController.GetRightY() < -0.2 || _operatorController.GetRightY() > 0.2) &&
-    !(_operatorController.GetLeftY() < -0.2 || _operatorController.GetLeftY() > 0.2);
-  }).WhileTrue(SubClimber::GetInstance().ClimberJoystickDriveRight(_operatorController));
+  // frc2::Trigger(frc2::CommandScheduler::GetInstance().GetDefaultButtonLoop(), [=, this] {
+  //   return (_operatorController.GetRightY() < -0.2 || _operatorController.GetRightY() > 0.2) &&
+  //   !(_operatorController.GetLeftY() < -0.2 || _operatorController.GetLeftY() > 0.2);
+  // }).WhileTrue(SubClimber::GetInstance().ClimberJoystickDriveRight(_operatorController));
 
-  frc2::Trigger(frc2::CommandScheduler::GetInstance().GetDefaultButtonLoop(), [=, this] {
-    return (_operatorController.GetRightY() < -0.2 || _operatorController.GetRightY() > 0.2) &&
-           (_operatorController.GetLeftY() < -0.2 || _operatorController.GetLeftY() > 0.2);
-  }).WhileTrue(SubClimber::GetInstance().ClimberJoystickDrive(_operatorController));
+  // frc2::Trigger(frc2::CommandScheduler::GetInstance().GetDefaultButtonLoop(), [=, this] {
+  //   return (_operatorController.GetRightY() < -0.2 || _operatorController.GetRightY() > 0.2) &&
+  //          (_operatorController.GetLeftY() < -0.2 || _operatorController.GetLeftY() > 0.2);
+  // }).WhileTrue(SubClimber::GetInstance().ClimberJoystickDrive(_operatorController));
 
   // Operator controls sysID
   // _operatorController.A().WhileTrue(SubArm::GetInstance().SysIdDynamic(frc2::sysid::Direction::kForward));

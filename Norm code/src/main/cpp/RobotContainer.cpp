@@ -116,8 +116,9 @@ void RobotContainer::ConfigureBindings() {
   !_driverController.LeftBumper() && !_driverController.RightBumper() && _driverController.Y().OnFalse(cmd::ArmToStow());
   !_driverController.LeftBumper() && !_driverController.RightBumper() && _driverController.A().OnTrue(cmd::PrepareToShoot());
   !_driverController.LeftBumper() && !_driverController.RightBumper() && _driverController.Start().WhileTrue(cmd::OuttakeNote());
+  !_driverController.LeftBumper() && !_driverController.RightBumper() && _driverController.RightBumper().WhileTrue(SubShooter::GetInstance().StartShooter());
   
-  !_driverController.LeftBumper() && !_driverController.RightBumper() && POVHelper::Left(&_driverController) && (POVHelper::Down(&_driverController)).OnTrue(SubDrivebase::GetInstance().ResetGyroCmd());
+  !_driverController.LeftBumper() && !_driverController.RightBumper() && _driverController.Back().OnTrue(SubDrivebase::GetInstance().ResetGyroCmd());
   !_driverController.LeftBumper() && !_driverController.RightBumper() && POVHelper::Up(&_driverController).OnTrue(SubClimber::GetInstance().ClimberPosition(0.467_m));
   !_driverController.LeftBumper() && !_driverController.RightBumper() && POVHelper::Down(&_driverController).OnTrue(SubClimber::GetInstance().ClimberPosition(0.001_m));
   !_driverController.LeftBumper() && !_driverController.RightBumper() && POVHelper::Left(&_driverController).ToggleOnTrue(SubIntake::GetInstance().ToggleExtendIntake());
@@ -125,8 +126,8 @@ void RobotContainer::ConfigureBindings() {
 \
 // both bumper combination
 
-  _driverController.LeftBumper() && _driverController.RightBumper() && _operatorController.RightTrigger().OnTrue(SubShooter::GetInstance().ShooterChangePosFar());
-  _driverController.LeftBumper() && _driverController.RightBumper() && _operatorController.LeftTrigger().OnTrue(SubShooter::GetInstance().ShooterChangePosClose());
+  // _driverController.LeftBumper() && _driverController.RightBumper() && _driverController.RightTrigger().OnTrue(SubShooter::GetInstance().ShooterChangePosFar());
+  // _driverController.LeftBumper() && _driverController.RightBumper() && _driverController.LeftTrigger().OnTrue(SubShooter::GetInstance().ShooterChangePosClose());
 
 
 

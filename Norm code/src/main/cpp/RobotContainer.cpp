@@ -122,8 +122,7 @@ void RobotContainer::ConfigureBindings() {
   !_driverController.LeftBumper() && !_driverController.RightBumper() && POVHelper::Down(&_driverController).OnTrue(SubClimber::GetInstance().ClimberPosition(0.001_m));
   !_driverController.LeftBumper() && !_driverController.RightBumper() && POVHelper::Left(&_driverController).ToggleOnTrue(SubIntake::GetInstance().ToggleExtendIntake());
   !_driverController.LeftBumper() && !_driverController.RightBumper() && POVHelper::Right(&_driverController).OnTrue(SubClimber::GetInstance().ClimberPosition(SubClimber::_ClimberPosStow));
-
-
+\
 // both bumper combination
 
   _driverController.LeftBumper() && _driverController.RightBumper() && _operatorController.RightTrigger().OnTrue(SubShooter::GetInstance().ShooterChangePosFar());
@@ -132,20 +131,20 @@ void RobotContainer::ConfigureBindings() {
 
 
   //joystick related
-  frc2::Trigger(frc2::CommandScheduler::GetInstance().GetDefaultButtonLoop(), [=, this] {
-    return (_driverController.GetLeftY() < -0.2 || _driverController.GetLeftY() > 0.2) &&
-    !(_driverController.GetRightY() < -0.2 || _driverController.GetRightY() > 0.2);
-  }).WhileTrue(SubClimber::GetInstance().ClimberJoystickDriveLeft(_driverController));
+  // frc2::Trigger(frc2::CommandScheduler::GetInstance().GetDefaultButtonLoop(), [=, this] {
+  //   return (_driverController.GetLeftY() < -0.2 || _driverController.GetLeftY() > 0.2) &&
+  //   !(_driverController.GetRightY() < -0.2 || _driverController.GetRightY() > 0.2); 
+  // }).WhileTrue(SubClimber::GetInstance().ClimberJoystickDriveLeft(_driverController));
 
-  frc2::Trigger(frc2::CommandScheduler::GetInstance().GetDefaultButtonLoop(), [=, this] {
-    return (_driverController.GetRightY() < -0.2 || _driverController.GetRightY() > 0.2) &&
-    !(_driverController.GetLeftY() < -0.2 || _driverController.GetLeftY() > 0.2);
-  }).WhileTrue(SubClimber::GetInstance().ClimberJoystickDriveRight(_driverController));
+  // frc2::Trigger(frc2::CommandScheduler::GetInstance().GetDefaultButtonLoop(), [=, this] {
+  //   return (_driverController.GetRightY() < -0.2 || _driverController.GetRightY() > 0.2) 
+  //   !(_driverController.GetLeftY() < -0.2 || _driverController.GetLeftY() > 0.2);
+  // }).WhileTrue(SubClimber::GetInstance().ClimberJoystickDriveRight(_driverController));
 
-  frc2::Trigger(frc2::CommandScheduler::GetInstance().GetDefaultButtonLoop(), [=, this] {
-    return (_driverController.GetRightY() < -0.2 || _driverController.GetRightY() > 0.2) &&
-           (_driverController.GetLeftY() < -0.2 || _driverController.GetLeftY() > 0.2);
-  }).WhileTrue(SubClimber::GetInstance().ClimberJoystickDrive(_driverController));
+  // frc2::Trigger(frc2::CommandScheduler::GetInstance().GetDefaultButtonLoop(), [=, this] {
+  //   return (_driverController.GetRightY() < -0.2 || _driverController.GetRightY() > 0.2) &&
+  //          (_driverController.GetLeftY() < -0.2 || _driverController.GetLeftY() > 0.2 ); 
+  // }).WhileTrue(SubClimber::GetInstance().ClimberJoystickDrive(_driverController));
 
 
   // SOFTWARE CONTROLS
